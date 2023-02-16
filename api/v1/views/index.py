@@ -1,29 +1,32 @@
 #!/usr/bin/python3
-"""
-This module contains endpoint(route) status
-"""
+"""Index"""
 from models import storage
-from flask import Flask
 from api.v1.views import app_views
 from flask import jsonify
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 @app_views.route('/status', strict_slashes=False)
 def status():
-    """
-    Returns a JSON status
-    """
-    return jsonify({"status": "OK"})
+    """ Status of API """
+    ok_status = {"status": "OK"}
+    return jsonify(ok_status)
 
 
-@app_views.route('/stats', strict_slashes=False)
-def count():
+@app_views.route('/stats')
+def stats():
     """
-    Retrieves the number of each objects by type
+        return dict count of data
     """
-    return jsonify({"amenities": storage.count("Amenity"),
-                    "cities": storage.count("City"),
-                    "places": storage.count("Place"),
-                    "reviews": storage.count("Review"),
-                    "states": storage.count("State"),
-                    "users": storage.count("User")})
+    my_dict = {"amenities": storage.count(Amenity),
+               "cities": storage.count(City),
+               "places": storage.count(Place),
+               "reviews": storage.count(Review),
+               "states": storage.count(State),
+               "users": storage.count(User)}
+    return jsonify(my_dict)
